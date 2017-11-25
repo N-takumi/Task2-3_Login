@@ -1,0 +1,14 @@
+<h2>画像アップロード</h2>
+
+
+    <form id="my_form" enctype="multipart/form-data">
+        <input type="hidden" name="MAX_FILE_SIZE" value="2097152" />
+        <input  type="file" name="file_1">
+        <button type="button" onclick="file_upload()">アップロード</button>
+    </form>
+    <p>画像URL -><a id="imgUrl"></a></p>
+    <p id="message"></p>
+
+
+
+<?php echo $this->tag->javascriptInclude('/public/js/upLoadFile.js');?>
