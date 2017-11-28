@@ -9,6 +9,7 @@ $loader = new \Phalcon\Loader();
 $loader->registerNamespaces(
     [
         'Store\Models' => $config->application->modelsDir,
+    //    'OAuth'        => $config->application->twitteroauth
     ]
 );
 
@@ -16,7 +17,8 @@ $loader->registerNamespaces(
 $loader->registerDirs(
     [
         $config->application->controllersDir,
-        $config->application->modelsDir
+        $config->application->modelsDir,
+  //      $config->application->twitteroauth
     ]
 );
 

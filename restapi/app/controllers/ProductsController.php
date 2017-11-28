@@ -42,7 +42,7 @@ class ProductsController extends ControllerBase
                   'description'=>$product->description,
                   'price'=> $product->price,
                   'imgFileName'=> $product->imgFileName,
-                ],'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+                ],'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
                 ];
           }
           $response->setJsonContent(
@@ -85,7 +85,7 @@ class ProductsController extends ControllerBase
               'price'=> $product->price,
               'imgFileName'=> $product->imgFileName
               ],
-            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
             ],JSON_UNESCAPED_UNICODE
           );
       }
@@ -124,7 +124,7 @@ class ProductsController extends ControllerBase
                 'price'=> $products->price,
                 'imgFileName'=> $products->imgFileName
               ],
-            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
               ],JSON_UNESCAPED_UNICODE
           );
       }
