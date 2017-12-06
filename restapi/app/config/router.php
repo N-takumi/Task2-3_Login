@@ -5,6 +5,42 @@ $router = $di->getRouter();
 
 // Define your routes here
 
+
+$router->addGet(
+    '/login',
+    [
+        'controller' => 'Login',
+        'action'     => 'login',
+    ]
+);
+
+
+$router->addGet(
+    '/callback',
+    [
+        'controller' => 'Login',
+        'action'     => 'callback',
+    ]
+);
+
+
+$router->addGet(
+    '/mypage',
+    [
+        'controller' => 'Login',
+        'action'     => 'showUserPage',
+    ]
+);
+
+$router->addGet(
+    '/logout',
+    [
+        'controller' => 'Login',
+        'action'     => 'logout',
+    ]
+);
+
+
 //データの取得 全件取得
 $router->addGet(
     '/products',

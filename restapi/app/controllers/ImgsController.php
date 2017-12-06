@@ -13,7 +13,22 @@ class ImgsController extends ControllerBase
         //画像保存
         public function uploadImgAction()
         {
+
           $response = new Response();
+
+          //ログインの確認
+          if($this->session->get('login_token') !== hash('sha256', session_id())){
+            $response->setStatusCode(401, 'Unauthorized');
+            $response->setStatusCode(401, 'Unauthorized');
+            $response->setJsonContent(
+              [
+                'status' => 'Unauthorized',
+                'message'=>'APIの使用にはログインが必要です',
+              ],JSON_UNESCAPED_UNICODE
+            );
+            return $response;
+          }
+
             // Check if the user has uploaded files
           if ($this->request->hasFiles())
           {
@@ -72,6 +87,12 @@ class ImgsController extends ControllerBase
         //画像表示
         public function showImgAction()
         {
+
+          //ログインの確認
+          if($this->session->get('login_token') !== hash('sha256', session_id())){
+            die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+          }
+
           $name = $this->dispatcher->getParam('name');
           echo'画像表示</br>';
 

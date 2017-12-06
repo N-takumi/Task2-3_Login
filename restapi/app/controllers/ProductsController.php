@@ -15,6 +15,13 @@ class ProductsController extends ControllerBase
     //データの取得 全件取得
     public function getAllAction()
     {
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die('APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする"));
+      }
+
+
       echo "全件取得";
 
       $data = [];//レスポンスデータの格納 配列
@@ -42,7 +49,7 @@ class ProductsController extends ControllerBase
                   'description'=>$product->description,
                   'price'=> $product->price,
                   'imgFileName'=> $product->imgFileName,
-                ],'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+                ],'imgUrl' => 'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
                 ];
           }
           $response->setJsonContent(
@@ -60,6 +67,12 @@ class ProductsController extends ControllerBase
     //データの個別取得(IDで指定)
     public function getPieceAction()
     {
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die('APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする"));
+      }
+
       echo'個別取得';
       $id = $this->dispatcher->getParam('int');
 
@@ -85,7 +98,7 @@ class ProductsController extends ControllerBase
               'price'=> $product->price,
               'imgFileName'=> $product->imgFileName
               ],
-            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
             ],JSON_UNESCAPED_UNICODE
           );
       }
@@ -97,6 +110,13 @@ class ProductsController extends ControllerBase
     //データの検索
     public function searchAction()
     {
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      }
+
+
       echo'検索処理';
       $name = $this->dispatcher->getParam('name');
 
@@ -124,7 +144,7 @@ class ProductsController extends ControllerBase
                 'price'=> $products->price,
                 'imgFileName'=> $products->imgFileName
               ],
-            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$file->getName()
+            'imgUrl' =>  'http://'.$_SERVER['HTTP_HOST'].'/restapi/products/img/'.$product->imgFileName
               ],JSON_UNESCAPED_UNICODE
           );
       }
@@ -136,6 +156,13 @@ class ProductsController extends ControllerBase
     //データの挿入
     public function addAction()
     {
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      }
+
+
       echo'データの挿入</br>';
 
       $response = new Response();
@@ -187,6 +214,13 @@ class ProductsController extends ControllerBase
     //データの変更(更新)
     public function updateAction()
     {
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      }
+
+
       echo'データの変更';
       $id = $this->dispatcher->getParam('int');
       echo($id);
@@ -244,6 +278,13 @@ class ProductsController extends ControllerBase
     //データの削除
     public function deleteAction()
     {
+
+
+      //ログインの確認
+      if($this->session->get('login_token') !== hash('sha256', session_id())){
+        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      }
+
       echo'データの削除';
       $id = $this->dispatcher->getParam('int');
       echo($id);

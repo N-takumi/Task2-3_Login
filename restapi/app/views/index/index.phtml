@@ -1,10 +1,15 @@
-<?php
+<div class='page-header'><h1>商品管理 API</h1></div>
 
-echo "<div class='page-header'><h1>商品管理 API</h1></div>";
+<p>基本課題 2-3 OAuth認証つき restfulなAPI</p>
 
-      echo "<p>基本課題 1 restfulなAPI</p>";
+<h4>このAPIは認証が必要です</h4>
 
-      echo "<p>This page is located at <code>views/index/index.phtml</code></p>";
+<?php  echo $this->tag->linkTo("Login", "ログイン");?>
+
+<br>
+
+<h4>画像のアップロードは以下で行います</h4>
+<?php  echo $this->tag->linkTo("Imgs", "Up Load IMG!");?>
 
 
-echo $this->tag->linkTo("Imgs", "Up Load IMG!");
+<?php echo $this->tag->javascriptInclude('/public/js/topPage.js');?>
