@@ -18,7 +18,9 @@ $dotenv->load();
 define( 'CONSUMER_KEY',getenv('CONS_KEY'));
 define( 'CONSUMER_SECRET', getenv('CONS_SECRET'));
 define('SQL_PASS',getenv('SQL_PASS'));
+
 define( 'OAUTH_CALLBACK', 'http://'.$_SERVER['HTTP_HOST'].'localhost/restapi/callback' );
+
 
 try {
 

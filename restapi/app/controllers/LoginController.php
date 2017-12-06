@@ -1,7 +1,6 @@
 <?php
 
 require_once '../twitteroauth-0.7.4/autoload.php';
-
 use Phalcon\Http\Response;
 use Phalcon\Http\Request;
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -21,8 +20,8 @@ class LoginController extends ControllerBase
       //TwitterOAuth をインスタンス化
       $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
 
-      $request_token = $connection->oauth('oauth/request_token');
 
+      $request_token = $connection->oauth('oauth/request_token');
       $this->session->set('oauth_token', $request_token['oauth_token']);
       $this->session->set('oauth_token_secret', $request_token['oauth_token_secret']);
 
@@ -85,6 +84,7 @@ class LoginController extends ControllerBase
       }
 
 
+
       //OAuthトークンとシークレットも使って TwitterOAuth をインスタンス化
       $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 
@@ -123,8 +123,8 @@ class LoginController extends ControllerBase
       }else{
         echo'エラー';
       }
-
       header('location: http://'.$_SERVER['HTTP_HOST'].'/restapi/Login');
+
 
     }
 
