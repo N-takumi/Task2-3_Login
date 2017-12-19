@@ -15,10 +15,18 @@ class ProductsController extends ControllerBase
     //データの取得 全件取得
     public function getAllAction()
     {
-
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die('APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする"));
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
 
@@ -29,8 +37,6 @@ class ProductsController extends ControllerBase
       $products = Products::find(
         ['order' => 'id',]//id順で
       );
-
-      $response = new Response();
 
       if ($products === false)
       {
@@ -67,10 +73,18 @@ class ProductsController extends ControllerBase
     //データの個別取得(IDで指定)
     public function getPieceAction()
     {
-
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die('APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする"));
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
       echo'個別取得';
@@ -78,7 +92,6 @@ class ProductsController extends ControllerBase
 
       $product = Products::findFirst($id);
 
-      $response = new Response();
       if ($product === false)
       {
           $response->setStatusCode(404, 'NOT-FOUND');
@@ -111,9 +124,18 @@ class ProductsController extends ControllerBase
     public function searchAction()
     {
 
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
 
@@ -121,8 +143,6 @@ class ProductsController extends ControllerBase
       $name = $this->dispatcher->getParam('name');
 
       $products = Products::findFirstByName($name);
-
-      $response = new Response();
 
       if ($products === false)
       {
@@ -157,15 +177,21 @@ class ProductsController extends ControllerBase
     public function addAction()
     {
 
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
-
       echo'データの挿入</br>';
-
-      $response = new Response();
 
       if ($this->request->isPost())
       {
@@ -215,17 +241,24 @@ class ProductsController extends ControllerBase
     public function updateAction()
     {
 
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
 
       echo'データの変更';
       $id = $this->dispatcher->getParam('int');
       echo($id);
-
-      $response = new Response();
 
       $product = Products::findFirst($id);
 
@@ -279,17 +312,23 @@ class ProductsController extends ControllerBase
     public function deleteAction()
     {
 
-
+      $response = new Response();
       //ログインの確認
-      if($this->session->get('login_token') !== hash('sha256', session_id())){
-        die( 'APIの使用にはログインが必要です<br>'.$this->tag->linkTo("Login", "ログインする") );
+      if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+        $response->setStatusCode(401, 'Unauthorized');
+        $response->setJsonContent(
+          [
+            'status' => 'Unauthorized',
+            'message'=>'APIの使用にはログインが必要です',
+            'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
       echo'データの削除';
       $id = $this->dispatcher->getParam('int');
       echo($id);
-
-      $response = new Response();
 
       $product = Products::findFirst($id);
       if($product === false)
