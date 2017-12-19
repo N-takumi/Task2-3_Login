@@ -13,7 +13,22 @@ class ImgsController extends ControllerBase
         //画像保存
         public function uploadImgAction()
         {
+
           $response = new Response();
+
+          //ログインの確認
+          if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+            $response->setStatusCode(401, 'Unauthorized');
+            $response->setJsonContent(
+              [
+                'status' => 'Unauthorized',
+                'message'=>'APIの使用にはログインが必要です',
+                'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+              ],JSON_UNESCAPED_UNICODE
+            );
+            return $response;
+          }
+
             // Check if the user has uploaded files
           if ($this->request->hasFiles())
           {
@@ -72,10 +87,22 @@ class ImgsController extends ControllerBase
         //画像表示
         public function showImgAction()
         {
+          $response = new Response();
+          //ログインの確認
+          if($this->session->get('login_token') !== hash('sha256', $this->session->get('login_token_id'))){
+            $response->setStatusCode(401, 'Unauthorized');
+            $response->setJsonContent(
+              [
+                'status' => 'Unauthorized',
+                'message'=>'APIの使用にはログインが必要です',
+                'loginUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/Login',
+              ],JSON_UNESCAPED_UNICODE
+            );
+            return $response;
+          }
+
           $name = $this->dispatcher->getParam('name');
           echo'画像表示</br>';
-
-          $response = new Response();
 
           if(file_exists('img/'.$name) === false)
           {

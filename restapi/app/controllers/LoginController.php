@@ -15,15 +15,9 @@ class LoginController extends ControllerBase
     //ログイン処理
     public function loginAction()
     {
-      //echo "login!!";
-
       //TwitterOAuth をインスタンス化
       $connection = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
-
-      //コールバックURLをここでセット
       $request_token = $connection->oauth('oauth/request_token');
-
-
       $this->session->set('oauth_token', $request_token['oauth_token']);
       $this->session->set('oauth_token_secret', $request_token['oauth_token_secret']);
 
@@ -53,11 +47,15 @@ class LoginController extends ControllerBase
 
         $this->session->set('access_token', $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier'])));
 
+        //トークン認証用のトークン作成及び格納
+        $this->session->set('login_token',hash('sha256', session_id()));
+        $this->session->set('login_token_id',session_id());
+
         //セッションIDをリジェネレート
         session_regenerate_id();
 
         //マイページへリダイレクト
-        header('location: http://localhost/restapi/mypage');
+        header('location: http://'.$_SERVER['HTTP_HOST'].'/restapi/mypage');
       }else{
         die('oauth_verifier error!');
       }
@@ -73,7 +71,14 @@ class LoginController extends ControllerBase
 
       $access_token = $this->session->get('access_token');
 
-      //var_dump($access_token);
+      $login_token = $this->session->get('login_token');
+
+      if($login_token == NULL){
+        echo'ログイン情報なし</br>';
+      }else{
+        echo'ログイン済み</br>';
+      }
+
 
 
       //OAuthトークンとシークレットも使って TwitterOAuth をインスタンス化
@@ -83,19 +88,29 @@ class LoginController extends ControllerBase
       $user = $connection->get("account/verify_credentials");
 
       if(isset($user->errors)){
-        echo($user->errors[0]->message);
+        //エラー時の処理
+        //ステータスメッセージを送る
+        $response->setStatusCode(404, 'NOT FOUND');
+        $response->setJsonContent(
+          [
+            'status' => 'Error',
+            'message'=>($user->errors[0]->message),
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }else{
+        $response->setStatusCode(200, 'OK');
 
-              echo 'マイページ</br>';
-              echo('　ユーザー名:'.htmlspecialchars($user->name).'</br>');
-              echo('　説明文:'.$user->description.'</br>');
-              echo('　最新のツイート:'.$user->status->text.'</br>');
-              echo('　画像:</br>');
-
-
-              $response->setContent($this->tag->image($user->profile_image_url)
-                                   .$this->tag->linkTo("logout", "LOGOUT"));
-              $response->send();
+        $response->setJsonContent(
+          [
+            'ユーザー名' => htmlspecialchars($user->name),
+            '説明文'=>htmlspecialchars($user->description),
+            '最新のツイート'=> htmlspecialchars($user->status->text),
+            '画像url'=>htmlspecialchars($user->profile_image_url),
+            'ログアウトurl'=>'http://'.$_SERVER['HTTP_HOST'].'/restapi/logout',
+          ],JSON_UNESCAPED_UNICODE
+        );
+        return $response;
       }
 
 
@@ -110,12 +125,11 @@ class LoginController extends ControllerBase
       //$this->session->destroy();
       if($this->session->destroy()){
         echo'ログアウト完了';
-
       }else{
         echo'エラー';
       }
+      header('location: http://'.$_SERVER['HTTP_HOST'].'/restapi/Login');
 
-      header('location: http://localhost/restapi/login');
 
     }
 

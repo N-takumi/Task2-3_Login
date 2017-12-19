@@ -20,8 +20,8 @@ function file_upload()
         var data = JSON.parse(response);
         console.log(data);
         $('#imgUrl').attr('href',data.imgUrl);
-        $('#imgUrl').append(data.imgUrl);
-        $('p').append(data.fileSize);
+        $('#imgUrl').text(data.imgUrl);
+        $('p').text(data.fileSize);
     })
     .fail(function(jqXHR, textStatus, errorThrown){
         alert("アップロード失敗:"+errorThrown);
